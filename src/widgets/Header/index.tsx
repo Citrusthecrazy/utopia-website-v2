@@ -10,8 +10,8 @@ const Header = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 bg-white dark:bg-gray-800">
-      <nav className="container p-6 mx-auto lg:flex lg:justify-between lg:items-center">
+    <header className="fixed top-0 left-0 right-0 bg-white dark:bg-gray-800 ">
+      <nav className="container p-6 mx-auto lg:flex lg:justify-between lg:items-center lg:max-h-20">
         <div className="flex items-center justify-between">
           <div className="text-2xl font-bold dark:text-white lg:text-3xl  select-none hover:cursor-pointer hover:text-gray-700 dark:hover:text-gray-300">
             <Link href="/">
@@ -41,8 +41,8 @@ const Header = () => {
             mobileMenuOpen ? "flex" : "hidden"
           } flex-col mt-4 space-y-2 lg:mt-0 lg:flex-row lg:-px-8 lg:space-y-0 lg:gap-4`}>
           <NavLink href="/" text="Početna" />
-          <NavLink href="/" text="Donacije" />
-          <NavLink href="/" text="Discord" />
+          <NavLink href="/donacije" text="Donacije" />
+          <NavLink href="/discord" text="Discord" />
         </div>
 
         <a
@@ -50,7 +50,7 @@ const Header = () => {
             mobileMenuOpen ? "block" : "hidden"
           } px-5 py-2 mt-4 font-medium leading-5 text-center text-white capitalize bg-[#5865F2] rounded-[5px] lg:mt-0 hover:bg-[#525ee4] lg:w-auto`}
           href="#">
-          <div className="flex flex-row gap-2 items-center">
+          <div className="flex flex-row gap-2 items-center justify-center">
             <Image src={discord} alt="discord" />
             <span>Prijava</span>
           </div>
