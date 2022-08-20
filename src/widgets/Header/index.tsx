@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link, { LinkProps } from "next/link";
-import React, { FC, useState } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import discord from "../../assets/discord.svg";
 import { NavLink } from "../../components";
 const Header = () => {
@@ -10,7 +10,7 @@ const Header = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 bg-white dark:bg-gray-800 z-10 shadow-sm">
+    <header className="sticky top-0 left-0 right-0 bg-white dark:bg-gray-800 z-50 shadow-sm">
       <nav className="container p-6 mx-auto lg:flex lg:justify-between lg:items-center lg:max-h-20">
         <div className="flex items-center justify-between">
           <div className="text-2xl font-bold dark:text-white lg:text-3xl  select-none hover:cursor-pointer hover:text-gray-700 dark:hover:text-gray-300">
@@ -29,7 +29,7 @@ const Header = () => {
               onClick={toggleMobileMenu}>
               <svg viewBox="0 0 24 24" className="w-6 h-6 fill-current">
                 <path
-                  fill-rule="evenodd"
+                  fillRule="evenodd"
                   d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"></path>
               </svg>
             </button>

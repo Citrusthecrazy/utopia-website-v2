@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { trpc } from "../utils/trpc";
 import { AboutUs, Header, Hero, WhyUs } from "../widgets";
+import JoinUs from "../widgets/JoinUs";
 
 const Home: NextPage = () => {
   const hello = trpc.useQuery(["example.hello", { text: "from tRPC" }]);
@@ -21,6 +22,7 @@ const Home: NextPage = () => {
           <Hero />
           <WhyUs />
           <AboutUs />
+          <JoinUs />
         </div>
       </main>
     </>
