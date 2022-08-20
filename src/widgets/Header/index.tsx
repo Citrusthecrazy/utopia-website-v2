@@ -1,14 +1,16 @@
+import { useSession, signIn, signOut } from "next-auth/react";
 import Image from "next/image";
-import Link, { LinkProps } from "next/link";
-import React, { FC, useCallback, useEffect, useState } from "react";
+import Link from "next/link";
+import React, { useState } from "react";
 import discord from "../../assets/discord.svg";
-import { NavLink } from "../../components";
+import { NavLink, UserMenu } from "../../components";
+
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(true);
   const toggleMobileMenu = () => {
     setMobileMenuOpen((open) => !open);
   };
-
+  const { data: session } = useSession();
   return (
     <header className="sticky top-0 left-0 right-0 bg-white dark:bg-gray-800 z-50 shadow-sm">
       <nav className="container p-6 mx-auto lg:flex lg:justify-between lg:items-center lg:max-h-20">
@@ -20,7 +22,6 @@ const Header = () => {
               </span>
             </Link>
           </div>
-
           <div className="flex lg:hidden">
             <button
               type="button"
@@ -44,17 +45,20 @@ const Header = () => {
           <NavLink href="/donacije" text="Donacije" />
           <NavLink href="/discord" text="Discord" />
         </div>
-
-        <a
-          className={`${
-            mobileMenuOpen ? "block" : "hidden"
-          } px-5 py-2 mt-4 font-medium leading-5 text-center text-white capitalize bg-[#5865F2] rounded-[5px] lg:mt-0 hover:bg-[#525ee4] lg:w-auto transition-all duration-150`}
-          href="#">
-          <div className="flex flex-row gap-2 items-center justify-center">
-            <Image src={discord} alt="discord" />
-            <span>Prijava</span>
-          </div>
-        </a>
+        {session ? (
+          <UserMenu />
+        ) : (
+          <button
+            onClick={() => signIn()}
+            className={`${
+              mobileMenuOpen ? "block" : "hidden"
+            } px-5 py-2 mt-4 font-medium leading-5 text-center text-white capitalize bg-[#5865F2] rounded-[5px] lg:mt-0 hover:bg-[#525ee4] lg:w-auto transition-all duration-150`}>
+            <div className="flex flex-row gap-2 items-center justify-center">
+              <Image src={discord} alt="discord" />
+              <span>Prijava</span>
+            </div>
+          </button>
+        )}
       </nav>
     </header>
   );

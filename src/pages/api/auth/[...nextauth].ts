@@ -1,5 +1,5 @@
 import NextAuth, { type NextAuthOptions } from "next-auth";
-import DiscordProvider from "next-auth/providers/discord";
+import DiscordProvider, { DiscordProfile } from "next-auth/providers/discord";
 
 // Prisma adapter for NextAuth, optional and can be removed
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
@@ -12,6 +12,8 @@ export const authOptions: NextAuthOptions = {
     session({ session, user }) {
       if (session.user) {
         session.user.id = user.id;
+        session.user.discriminator = user.discriminator as string;
+        session.user.discordId = user.discordId as string;
       }
       return session;
     },
@@ -22,9 +24,20 @@ export const authOptions: NextAuthOptions = {
     DiscordProvider({
       clientId: env.DISCORD_CLIENT_ID,
       clientSecret: env.DISCORD_CLIENT_SECRET,
+      profile(profile: DiscordProfile, tokens) {
+        return {
+          id: profile.id,
+          discordId: profile.id,
+          name: profile.username,
+          email: profile.email,
+          image: `https://cdn.discordapp.com/avatars/${profile.id}/${profile.avatar}.webp`,
+          discriminator: profile.discriminator,
+        };
+      },
     }),
     // ...add more providers here
   ],
+  secret: env.NEXTAUTH_SECRET,
 };
 
 export default NextAuth(authOptions);

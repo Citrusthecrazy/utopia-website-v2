@@ -17,7 +17,6 @@ const Home: NextPage = () => {
 
       <main className="relative w-screen h-screen overflow-x-hidden">
         <Header />
-        <div className="mt-20" /> {/* Header height */}
         <div className="container px-6 py-12 mx-auto">
           <Hero />
           <WhyUs />
