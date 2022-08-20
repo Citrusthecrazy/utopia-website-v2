@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { trpc } from "../utils/trpc";
-import { Header, Hero } from "../widgets";
+import { Header, Hero, WhyUs } from "../widgets";
 
 const Home: NextPage = () => {
   const hello = trpc.useQuery(["example.hello", { text: "from tRPC" }]);
@@ -19,6 +19,7 @@ const Home: NextPage = () => {
         <div className="mt-20" /> {/* Header height */}
         <div className="container px-6 py-12 mx-auto">
           <Hero />
+          <WhyUs />
         </div>
       </main>
     </>

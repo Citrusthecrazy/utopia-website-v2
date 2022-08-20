@@ -1,3 +1,4 @@
+import FeatureCard from "./FeatureCard/FeatureCard";
 import { NavLink } from "./NavLink";
 
-export { NavLink };
+export { NavLink, FeatureCard };
