@@ -6,7 +6,7 @@ import { FeatureCard } from "../../components";
 
 const WhyUs = () => {
   return (
-    <section className="mt-36">
+    <article className="mt-36">
       <h2 className="font-bold text-4xl">Zašto Utopia Roleplay</h2>
       <p className=" mt-7 text-gray-500">
         Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nostrum quam
@@ -31,7 +31,7 @@ const WhyUs = () => {
           icon={tshirt}
         />
       </div>
-    </section>
+    </article>
   );
 };
 
