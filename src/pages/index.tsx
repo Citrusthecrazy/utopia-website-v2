@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { trpc } from "../utils/trpc";
-import { AboutUs, Header, Hero, WhyUs } from "../widgets";
+import { AboutUs, Contact, Footer, Header, Hero, WhyUs } from "../widgets";
 import JoinUs from "../widgets/JoinUs";
 
 const Home: NextPage = () => {
@@ -23,7 +23,9 @@ const Home: NextPage = () => {
           <WhyUs />
           <AboutUs />
           <JoinUs />
+          <Contact />
         </div>
+        <Footer />
       </main>
     </>
   );

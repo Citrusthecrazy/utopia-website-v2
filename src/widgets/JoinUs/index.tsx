@@ -5,7 +5,7 @@ const JoinUs = () => {
   return (
     <article className="mt-36 flex flex-col items-center justify-center">
       <h2 className="font-bold text-4xl">Kako da nam se pridružiš</h2>
-      <div className="container px-5 py-24 mx-auto flex flex-wrap">
+      <div className="container px-5 pt-24 mx-auto flex flex-wrap">
         <JoinStep
           step={1}
           title="Instaliran GTAV"
