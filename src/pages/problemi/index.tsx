@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { FormEvent } from "react";
+import { Button, Input } from "../../components";
 import { Footer, Header } from "../../widgets";
 
 const Problemi: NextPage = () => {
@@ -28,19 +29,12 @@ const Problemi: NextPage = () => {
             na pomoći.
           </p>
           <form className="mt-8" onSubmit={handleFormSubmit}>
-            <div className="p-2 w-full">
-              <div className="relative">
-                <label className="leading-7 text-sm ">
-                  Naslov (ime skripte ili funkcije)
-                </label>
-                <input
-                  type="text"
-                  id="title"
-                  name="title"
-                  className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                />
-              </div>
-            </div>
+            <Input
+              label="Naslov (ime skripte ili funkcije)"
+              type="text"
+              id="title"
+              name="title"
+            />
             <div className="p-2 w-full">
               <div className="relative">
                 <label className="leading-7 text-sm ">Opis</label>
@@ -52,11 +46,7 @@ const Problemi: NextPage = () => {
                 />
               </div>
             </div>
-            <button
-              type="submit"
-              className="flex mx-auto text-white bg-[#467BA5] border-0 py-2 px-8 focus:outline-none hover:bg-[#3d74a1] rounded">
-              Pošalji
-            </button>
+            <Button type="submit">Pošalji</Button>
           </form>
         </div>
         <Footer />
