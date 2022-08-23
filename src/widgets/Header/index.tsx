@@ -43,7 +43,10 @@ const Header = () => {
           } flex-col mt-4 space-y-2 lg:mt-0 lg:flex-row lg:-px-8 lg:space-y-0 lg:gap-4`}>
           <NavLink href="/" text="Početna" />
           <NavLink href="/donacije" text="Donacije" />
-          <a href="https://discord.gg/exQF9SAB9C" target="_blank">
+          <a
+            href="https://discord.gg/exQF9SAB9C"
+            target="_blank"
+            rel="noreferrer">
             <span className="transition-colors duration-200 transform dark:text-gray-200 dark:hover:text-blue-400 hover:text-[#467BA5] select-none hover:cursor-pointer">
               Discord
             </span>
