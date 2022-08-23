@@ -2,10 +2,12 @@ import React, { Fragment } from "react";
 import Image from "next/image";
 import { signOut, useSession } from "next-auth/react";
 import { Menu, Transition } from "@headlessui/react";
+import { useRouter } from "next/router";
 const UserMenu = () => {
   const { data: session } = useSession();
+  const router = useRouter();
   return (
-    <Menu as="div" className="relative inline-block">
+    <Menu as="div" className="hidden md:inline-block relative">
       <Menu.Button>
         {" "}
         <Image
@@ -30,8 +32,8 @@ const UserMenu = () => {
                 <button
                   className={`${
                     active && "bg-[#467BA5] text-white"
-                  } group flex w-full items-center rounded-md px-2 py-2 text-sm`}>
-                  Account settings
+                  } flex w-full items-center rounded-md px-2 py-2 text-sm`}>
+                  Moj nalog
                 </button>
               )}
             </Menu.Item>
@@ -40,8 +42,9 @@ const UserMenu = () => {
                 <button
                   className={`${
                     active && "bg-[#467BA5] text-white"
-                  } group flex w-full items-center rounded-md px-2 py-2 text-sm`}>
-                  Account settings
+                  } flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                  onClick={() => router.push("/problemi")}>
+                  Problemi
                 </button>
               )}
             </Menu.Item>
@@ -50,7 +53,7 @@ const UserMenu = () => {
                 <button
                   className={`${
                     active && "bg-red-500 text-white"
-                  } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                  } flex w-full items-center rounded-md px-2 py-2 text-sm`}
                   onClick={() => signOut()}>
                   Odjava
                 </button>
