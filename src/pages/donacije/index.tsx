@@ -21,7 +21,7 @@ const Donacije: NextPage = () => {
               <h1 className="font-bold text-4xl lg:text-6xl text-[#467BA5]">
                 Donacije
               </h1>
-              <p className="mt-4 lg:mt-8">
+              <p className="mt-4 lg:mt-8 max-w-xl">
                 Vaše donacije imaju direktan uticaj u dalji razvoj i unapređenje
                 servera. One nam omogućuju da nastavimo da ulažemo trud i vreme
                 kako bi podizali Utopia Roleplay server na nove nivoe,a zauzvrat
@@ -29,7 +29,7 @@ const Donacije: NextPage = () => {
                 stvari na serveru. Donacije su dobrodošle ali ne i obavezne.
               </p>
             </div>
-            <div className="hidden lg:block">
+            <div className="hidden lg:block max-w-md">
               <Image src={creditCards} />
             </div>
           </div>
@@ -60,6 +60,8 @@ const Donacije: NextPage = () => {
               </button>
             </div>
           </div>
+
+          {/* <h1>TODO: Paypal checkout</h1> */}
         </div>
         <Footer />
       </main>

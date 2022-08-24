@@ -4,7 +4,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import discord from "../../assets/discord.svg";
 import { NavLink, UserMenu } from "../../components";
-
+import logo from "../../assets/logo.png";
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(true);
   const toggleMobileMenu = () => {
@@ -17,9 +17,10 @@ const Header = () => {
         <div className="flex items-center justify-between">
           <div className="text-2xl font-bold dark:text-white lg:text-3xl  select-none hover:cursor-pointer hover:text-gray-700 dark:hover:text-gray-300">
             <Link href="/">
-              <span>
+              {/* <span>
                 <span className="text-[#467BA5]">Utopia</span> Roleplay
-              </span>
+              </span> */}
+              <Image src={logo} width={140} height={40} />
             </Link>
           </div>
           <div className="flex lg:hidden">
