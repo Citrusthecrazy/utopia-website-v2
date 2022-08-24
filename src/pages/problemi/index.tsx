@@ -14,7 +14,7 @@ const Problemi: NextPage = () => {
       <Head>
         <title>Utopia Roleplay - Problemi</title>
         <meta name="description" content="FiveM roleplay server" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.png" />
       </Head>
 
       <main className="relative w-screen h-screen overflow-x-hidden flex flex-col">

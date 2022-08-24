@@ -9,8 +9,7 @@ const WhyUs = () => {
     <article className="mt-36">
       <h2 className="font-bold text-4xl">Zašto Utopia Roleplay</h2>
       <p className=" mt-7 text-gray-500">
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nostrum quam
-        voluptatibus
+        Saznajte zašto je Utopia Roleplay najbolja opcija za vas.
       </p>
       <div className="grid grid-cols-1 gap-8 mt-8 xl:mt-12 xl:gap-12 md:grid-cols-2 xl:grid-cols-3">
         <FeatureCard
