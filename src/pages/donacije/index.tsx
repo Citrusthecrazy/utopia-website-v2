@@ -3,8 +3,37 @@ import Head from "next/head";
 import Image from "next/image";
 import { Footer, Header } from "../../widgets";
 import creditCards from "../../assets/credit-cards.svg";
-import { Button, Input } from "../../components";
+import { CoinButton, Input } from "../../components";
+import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { trpc } from "../../utils/trpc";
+import { useRef, useState } from "react";
+import { env } from "../../env/client.mjs";
+
 const Donacije: NextPage = () => {
+  const [coinsAmount, setCoinsAmount] = useState(5);
+  const coinsReference = useRef<number>();
+  coinsReference.current = coinsAmount;
+
+  const createOrder = trpc.useMutation("paypal.createOrder");
+  const captureOrder = trpc.useMutation("paypal.captureOrder");
+
+  const createPayPalOrder = async (): Promise<string> => {
+    if (!coinsReference.current) coinsReference.current = 5;
+
+    const { orderId } = await createOrder.mutateAsync({
+      amountOfCoins: coinsReference.current,
+    });
+
+    return orderId;
+  };
+
+  const onApprove = async (data: OnApproveData): Promise<void> => {
+    return captureOrder.mutate({ orderId: data.orderID });
+  };
+  const handleAmountChange = (amount: number) => {
+    setCoinsAmount(amount);
+  };
+
   return (
     <>
       <Head>
@@ -30,7 +59,7 @@ const Donacije: NextPage = () => {
               </p>
             </div>
             <div className="hidden lg:block max-w-md">
-              <Image src={creditCards} />
+              <Image src={creditCards} alt="credit cards" />
             </div>
           </div>
 
@@ -43,25 +72,53 @@ const Donacije: NextPage = () => {
               <Input label="Server ID" />
             </form>
             <div className="flex flex-row justify-center gap-4 max-w-xs flex-wrap">
-              <button className="flex flex-col items-center justify-center text-2xl p-12 bg-[#467BA5] text-white font-semibold rounded-full w-5 h-5 hover:bg-[#3d74a1]">
-                5
-              </button>
-              <button className="flex flex-col items-center justify-center text-2xl p-12 bg-[#467BA5] text-white font-semibold rounded-full w-5 h-5 hover:bg-[#3d74a1]">
-                10
-              </button>
-              <button className="flex flex-col items-center justify-center text-2xl p-12 bg-[#467BA5] text-white font-semibold rounded-full w-5 h-5 hover:bg-[#3d74a1]">
-                25
-              </button>
-              <button className="flex flex-col items-center justify-center text-2xl p-12 bg-[#467BA5] text-white font-semibold rounded-full w-5 h-5 hover:bg-[#3d74a1]">
-                50
-              </button>
-              <button className="flex flex-col items-center justify-center text-2xl p-12 bg-[#467BA5] text-white font-semibold rounded-full w-5 h-5 hover:bg-[#3d74a1]">
-                100
-              </button>
+              <CoinButton
+                currentAmount={coinsReference.current}
+                onClick={handleAmountChange}
+                coinsAmount={5}
+              />
+              <CoinButton
+                currentAmount={coinsReference.current}
+                onClick={handleAmountChange}
+                coinsAmount={10}
+              />
+              <CoinButton
+                currentAmount={coinsReference.current}
+                onClick={handleAmountChange}
+                coinsAmount={25}
+              />
+              <CoinButton
+                currentAmount={coinsReference.current}
+                onClick={handleAmountChange}
+                coinsAmount={50}
+              />
+              <CoinButton
+                currentAmount={coinsReference.current}
+                onClick={handleAmountChange}
+                coinsAmount={100}
+              />
             </div>
           </div>
-
-          {/* <h1>TODO: Paypal checkout</h1> */}
+          <div className="flex flex-row justify-center items-center mt-8">
+            <div className="w-full lg:w-1/3">
+              <PayPalScriptProvider
+                options={{
+                  "client-id": env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
+                  currency: "EUR",
+                }}>
+                <PayPalButtons
+                  style={{
+                    color: "blue",
+                    shape: "rect",
+                    label: "buynow",
+                    height: 50,
+                  }}
+                  createOrder={createPayPalOrder}
+                  onApprove={onApprove}
+                />
+              </PayPalScriptProvider>
+            </div>
+          </div>
         </div>
         <Footer />
       </main>
@@ -70,3 +127,13 @@ const Donacije: NextPage = () => {
 };
 
 export default Donacije;
+
+interface OnApproveData {
+  billingToken?: string | null;
+  facilitatorAccessToken: string;
+  orderID: string;
+  payerID?: string | null;
+  paymentID?: string | null;
+  subscriptionID?: string | null;
+  authCode?: string | null;
+}
