@@ -5,8 +5,6 @@ import { AboutUs, Contact, Footer, Header, Hero, WhyUs } from "../widgets";
 import JoinUs from "../widgets/JoinUs";
 
 const Home: NextPage = () => {
-  const hello = trpc.useQuery(["example.hello", { text: "from tRPC" }]);
-
   return (
     <>
       <Head>
