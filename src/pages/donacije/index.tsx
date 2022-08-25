@@ -8,6 +8,8 @@ import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { trpc } from "../../utils/trpc";
 import { useRef, useState } from "react";
 import { env } from "../../env/client.mjs";
+import { Toaster } from "react-hot-toast";
+import { showAlert } from "../../utils/alert";
 
 const Donacije: NextPage = () => {
   const [coinsAmount, setCoinsAmount] = useState(5);
@@ -28,12 +30,11 @@ const Donacije: NextPage = () => {
   };
 
   const onApprove = async (data: OnApproveData): Promise<void> => {
-    return captureOrder.mutate({ orderId: data.orderID });
+    captureOrder.mutate({ orderId: data.orderID });
   };
   const handleAmountChange = (amount: number) => {
     setCoinsAmount(amount);
   };
-
   return (
     <>
       <Head>
@@ -44,6 +45,7 @@ const Donacije: NextPage = () => {
 
       <main className="relative w-screen h-screen overflow-x-hidden flex flex-col">
         <Header />
+        <Toaster position="bottom-center" />
         <div className="container px-6 py-12 mx-auto flex-grow">
           <div className=" flex flex-col lg:flex-row items-center justify-between">
             <div className="lg:w-1/2">
@@ -94,7 +96,7 @@ const Donacije: NextPage = () => {
               />
               <CoinButton
                 currentAmount={coinsReference.current}
-                onClick={handleAmountChange}
+                onClick={() => showAlert("Ovo je info", "warning")}
                 coinsAmount={100}
               />
             </div>
@@ -128,7 +130,7 @@ const Donacije: NextPage = () => {
 
 export default Donacije;
 
-interface OnApproveData {
+type OnApproveData = {
   billingToken?: string | null;
   facilitatorAccessToken: string;
   orderID: string;
@@ -136,4 +138,4 @@ interface OnApproveData {
   paymentID?: string | null;
   subscriptionID?: string | null;
   authCode?: string | null;
-}
+};
