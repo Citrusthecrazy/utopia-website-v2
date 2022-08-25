@@ -8,14 +8,29 @@ export const paypalRouter = createRouter()
   .mutation("createOrder", {
     input: z.object({
       amountOfCoins: z.number().int().positive().min(5).max(100),
+      name: z.string(),
+      email: z.string().email(),
+      state: z.string(),
+      address: z.string(),
+      serverId: z.string(),
     }),
     async resolve({ input, ctx }) {
       if (!ctx.session || !ctx.session.user) {
-        throw new TRPCError({ message: "Not logged in", code: "UNAUTHORIZED" });
-      }
-      if (!input?.amountOfCoins) {
         throw new TRPCError({
-          message: "Amount not provided",
+          message: "Morate biti ulogovani",
+          code: "UNAUTHORIZED",
+        });
+      }
+      if (
+        !input?.amountOfCoins ||
+        !input?.name ||
+        !input?.email ||
+        !input?.state ||
+        !input?.address ||
+        !input?.serverId
+      ) {
+        throw new TRPCError({
+          message: "Potrebno je uneti sve podatke",
           code: "BAD_REQUEST",
         });
       }
@@ -36,18 +51,30 @@ export const paypalRouter = createRouter()
       const response = await PaypalClient.execute(request);
       if (response.statusCode !== 201) {
         throw new TRPCError({
-          message: "Error creating order",
+          message: "Greška pri kreiranju porudžbine",
           code: "INTERNAL_SERVER_ERROR",
         });
       }
-      await ctx.prisma.payment.create({
-        data: {
-          orderID: response.result.id,
-          userId: ctx.session.user.id,
-          status: "PENDING",
-          amount: input?.amountOfCoins,
-        },
-      });
+      await ctx.prisma.payment
+        .create({
+          data: {
+            orderID: response.result.id,
+            userId: ctx.session.user.id,
+            status: "PENDING",
+            amount: input?.amountOfCoins,
+            name: input?.name,
+            email: input?.email,
+            state: input?.state,
+            address: input?.address,
+            serverId: input?.serverId,
+          },
+        })
+        .catch((err) => {
+          throw new TRPCError({
+            message: err,
+            code: "INTERNAL_SERVER_ERROR",
+          });
+        });
       return { orderId: response.result.id };
     },
   })
@@ -60,7 +87,7 @@ export const paypalRouter = createRouter()
     async resolve({ input, ctx }) {
       if (!input?.orderId) {
         throw new TRPCError({
-          message: "Error capturing order",
+          message: "Greška pri obradi porudžbine",
           code: "PARSE_ERROR",
         });
       }
@@ -69,7 +96,7 @@ export const paypalRouter = createRouter()
       const response = await PaypalClient.execute(request);
       if (!response) {
         throw new TRPCError({
-          message: "Error capturing order",
+          message: "Greška pri obradi porudžbine",
           code: "INTERNAL_SERVER_ERROR",
         });
       }
@@ -81,5 +108,6 @@ export const paypalRouter = createRouter()
           status: "PAID",
         },
       });
+      return { message: "Uspešno ste platili porudžbinu" };
     },
   });

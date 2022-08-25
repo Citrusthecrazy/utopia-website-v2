@@ -10,31 +10,67 @@ import { useRef, useState } from "react";
 import { env } from "../../env/client.mjs";
 import { Toaster } from "react-hot-toast";
 import { showAlert } from "../../utils/alert";
+import { useForm } from "react-hook-form";
+
+type FormData = {
+  name: string;
+  email: string;
+  state: string;
+  address: string;
+  serverId: string;
+};
 
 const Donacije: NextPage = () => {
   const [coinsAmount, setCoinsAmount] = useState(5);
   const coinsReference = useRef<number>();
   coinsReference.current = coinsAmount;
+  const {
+    register,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+    getValues,
+  } = useForm<FormData>();
+  const onSubmit = handleSubmit((data) => console.log(data));
 
-  const createOrder = trpc.useMutation("paypal.createOrder");
-  const captureOrder = trpc.useMutation("paypal.captureOrder");
+  const createOrder = trpc.useMutation("paypal.createOrder", {
+    onError: (error) => {
+      showAlert(error.message, "error");
+    },
+  });
+  const captureOrder = trpc.useMutation("paypal.captureOrder", {
+    onSuccess: () => {
+      showAlert("Uspešno ste donirali! Hvala Vam.", "success");
+    },
+    onError: (error) => {
+      showAlert(error.message, "error");
+    },
+  });
 
   const createPayPalOrder = async (): Promise<string> => {
     if (!coinsReference.current) coinsReference.current = 5;
-
+    console.log(register("name").name);
     const { orderId } = await createOrder.mutateAsync({
       amountOfCoins: coinsReference.current,
+      name: getValues("name"),
+      email: getValues("email"),
+      state: getValues("state"),
+      address: getValues("address"),
+      serverId: getValues("serverId"),
     });
 
     return orderId;
   };
 
   const onApprove = async (data: OnApproveData): Promise<void> => {
-    captureOrder.mutate({ orderId: data.orderID });
+    return await captureOrder.mutate({
+      orderId: data.orderID,
+    });
   };
   const handleAmountChange = (amount: number) => {
     setCoinsAmount(amount);
   };
+
   return (
     <>
       <Head>
@@ -66,12 +102,27 @@ const Donacije: NextPage = () => {
           </div>
 
           <div className="mt-16 flex flex-col gap-16 lg:flex-row lg:justify-between items-center xl:px-64">
-            <form>
-              <Input label="Ime i prezime" />
-              <Input label="E-mail" />
-              <Input label="Država" />
-              <Input label="Adresa" />
-              <Input label="Server ID" />
+            <form onSubmit={onSubmit}>
+              <Input
+                text="Ime i prezime"
+                label="name"
+                register={register}
+                required
+              />
+              <Input text="Email" label="email" register={register} required />
+              <Input text="Država" label="state" register={register} required />
+              <Input
+                text="Adresa"
+                label="address"
+                register={register}
+                required
+              />
+              <Input
+                text="Server ID"
+                label="serverId"
+                register={register}
+                required
+              />
             </form>
             <div className="flex flex-row justify-center gap-4 max-w-xs flex-wrap">
               <CoinButton
@@ -96,7 +147,7 @@ const Donacije: NextPage = () => {
               />
               <CoinButton
                 currentAmount={coinsReference.current}
-                onClick={() => showAlert("Ovo je info", "warning")}
+                onClick={handleAmountChange}
                 coinsAmount={100}
               />
             </div>
@@ -117,6 +168,7 @@ const Donacije: NextPage = () => {
                   }}
                   createOrder={createPayPalOrder}
                   onApprove={onApprove}
+                  onCancel={() => showAlert("Donacija je otkazana", "error")}
                 />
               </PayPalScriptProvider>
             </div>
