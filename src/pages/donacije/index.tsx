@@ -24,13 +24,7 @@ const Donacije: NextPage = () => {
   const [coinsAmount, setCoinsAmount] = useState(5);
   const coinsReference = useRef<number>();
   coinsReference.current = coinsAmount;
-  const {
-    register,
-    setValue,
-    handleSubmit,
-    formState: { errors },
-    getValues,
-  } = useForm<FormData>();
+  const { register, handleSubmit, getValues } = useForm<FormData>();
   const onSubmit = handleSubmit((data) => console.log(data));
 
   const createOrder = trpc.useMutation("paypal.createOrder", {

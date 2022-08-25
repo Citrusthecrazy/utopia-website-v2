@@ -53,9 +53,11 @@ model User {
     emailVerified DateTime?
     image         String?
     discriminator String?
+    role          String    @default("user")
     accounts      Account[]
     sessions      Session[]
     payments      Payment[]
+    issues        Issue[]
 }
 
 model VerificationToken {
@@ -79,4 +81,14 @@ model Payment {
     serverId String
     date     DateTime @default(now())
     user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Issue {
+    id          String   @id @default(cuid())
+    title       String
+    description String
+    authorId    String
+    status      String   @default("open")
+    createdAt   DateTime @default(now())
+    user        User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
 }
