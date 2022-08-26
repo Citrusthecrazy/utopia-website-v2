@@ -1,26 +1,25 @@
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import discord from "../../assets/discord.svg";
 import { NavLink, UserMenu } from "../../components";
 import logo from "../../assets/logo.png";
+import { trpc } from "../../utils/trpc";
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(true);
   const toggleMobileMenu = () => {
     setMobileMenuOpen((open) => !open);
   };
   const { data: session } = useSession();
+  const user = trpc.useQuery(["user.getUser"]);
   return (
     <header className="sticky top-0 left-0 right-0 bg-white dark:bg-gray-800 z-50 shadow-sm">
       <nav className="container p-6 mx-auto lg:flex lg:justify-between lg:items-center lg:max-h-20">
         <div className="flex items-center justify-between">
           <div className="text-2xl font-bold dark:text-white lg:text-3xl  select-none hover:cursor-pointer hover:text-gray-700 dark:hover:text-gray-300">
             <Link href="/">
-              {/* <span>
-                <span className="text-[#467BA5]">Utopia</span> Roleplay
-              </span> */}
-              <Image src={logo} width={140} height={40} />
+              <Image src={logo} width={140} height={40} alt="utopia logo" />
             </Link>
           </div>
           <div className="flex lg:hidden">
@@ -44,6 +43,7 @@ const Header = () => {
           } flex-col mt-4 space-y-2 lg:mt-0 lg:flex-row lg:-px-8 lg:space-y-0 lg:gap-4`}>
           <NavLink href="/" text="Početna" />
           <NavLink href="/donacije" text="Donacije" />
+
           <a
             href="https://discord.gg/exQF9SAB9C"
             target="_blank"
@@ -52,12 +52,15 @@ const Header = () => {
               Discord
             </span>
           </a>
+          {user.data?.role === "admin" && (
+            <NavLink href="/admin" text="Admin Panel" />
+          )}
         </div>
         {session ? (
           <UserMenu />
         ) : (
           <button
-            onClick={() => signIn()}
+            onClick={() => signIn("discord")}
             className={`${
               mobileMenuOpen ? "block" : "hidden"
             } px-5 py-2 mt-4 font-medium leading-5 text-center text-white capitalize bg-[#5865F2] rounded-[5px] lg:mt-0 hover:bg-[#525ee4] lg:w-auto transition-all duration-150`}>
