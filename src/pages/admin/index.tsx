@@ -3,15 +3,16 @@ import Head from "next/head";
 import React from "react";
 import { Toaster } from "react-hot-toast";
 import { trpc } from "../../utils/trpc";
-import { IssueCard } from "../../widgets";
+import { IssueCard, Unauthorized } from "../../widgets";
 import Sidebar from "../../widgets/Sidebar";
 
 const Admin = () => {
   const { data: session } = useSession();
   const user = trpc.useQuery(["user.getUser"]);
   const issues = trpc.useQuery(["issue.getIssues"]);
+
   if (!session || user.data?.role !== "admin") {
-    return <div>Nemate pravo pristupa</div>;
+    return <Unauthorized />;
   }
 
   return (

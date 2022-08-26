@@ -14,7 +14,7 @@ const SidebarItem: FC<SidebarItemProps> = ({ label, icon, onClick }) => {
       <>
         {React.createElement("svg", { className: "w-5 h-5 opacity-75" }, icon)}
 
-        <span className="absolute text-xs font-medium text-white bg-gray-900 left-full ml-4 px-2 py-1.5 top-1/2 -translate-y-1/2 rounded opacity-0 group-hover:opacity-100">
+        <span className="absolute text-xs font-medium text-white bg-gray-900 left-full ml-4 px-2 py-1.5 top-1/2 -translate-y-1/2 rounded opacity-0 group-hover:opacity-100 z-50">
           {label}
         </span>
       </>
