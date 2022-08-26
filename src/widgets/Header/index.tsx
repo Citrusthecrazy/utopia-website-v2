@@ -5,14 +5,12 @@ import React, { useState } from "react";
 import discord from "../../assets/discord.svg";
 import { NavLink, UserMenu } from "../../components";
 import logo from "../../assets/logo.png";
-import { trpc } from "../../utils/trpc";
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(true);
   const toggleMobileMenu = () => {
     setMobileMenuOpen((open) => !open);
   };
   const { data: session } = useSession();
-  const user = trpc.useQuery(["user.getUser"]);
   return (
     <header className="sticky top-0 left-0 right-0 bg-white dark:bg-gray-800 z-50 shadow-sm">
       <nav className="container p-6 mx-auto lg:flex lg:justify-between lg:items-center lg:max-h-20">
@@ -52,9 +50,6 @@ const Header = () => {
               Discord
             </span>
           </a>
-          {user.data?.role === "admin" && (
-            <NavLink href="/admin" text="Admin Panel" />
-          )}
         </div>
         {session ? (
           <UserMenu />
