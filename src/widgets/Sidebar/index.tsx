@@ -33,9 +33,21 @@ const Sidebar = () => {
                 icon={<HomeIcon />}
                 onClick={() => router.push("/")}
               />
-              <SidebarItem label="Problemi" icon={<WrenchIcon />} />
-              <SidebarItem label="Donacije" icon={<CreditCardIcon />} />
-              <SidebarItem label="Poruke" icon={<EnvelopeIcon />} />
+              <SidebarItem
+                label="Problemi"
+                icon={<WrenchIcon />}
+                onClick={() => router.push("/admin")}
+              />
+              <SidebarItem
+                label="Donacije"
+                icon={<CreditCardIcon />}
+                onClick={() => router.push("/admin/donacije")}
+              />
+              <SidebarItem
+                label="Poruke"
+                icon={<EnvelopeIcon />}
+                onClick={() => router.push("/admin/poruke")}
+              />
             </ul>
           </nav>
         </div>

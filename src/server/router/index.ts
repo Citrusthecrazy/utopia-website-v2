@@ -6,13 +6,15 @@ import { paypalRouter } from "./paypal";
 import { protectedExampleRouter } from "./protected-example-router";
 import { issueRouter } from "./issue";
 import { userRouter } from "./user";
+import { donationsRouter } from "./donations";
 
 export const appRouter = createRouter()
   .transformer(superjson)
   .merge("paypal.", paypalRouter)
   .merge("question.", protectedExampleRouter)
   .merge("issue.", issueRouter)
-  .merge("user.", userRouter);
+  .merge("user.", userRouter)
+  .merge("donations.", donationsRouter);
 
 // export type definition of API
 export type AppRouter = typeof appRouter;
