@@ -2,6 +2,7 @@ import { useSession } from "next-auth/react";
 import Head from "next/head";
 import React from "react";
 import { Toaster } from "react-hot-toast";
+import DonationCard from "../../../components/DonationCard";
 import { trpc } from "../../../utils/trpc";
 import { Loading, Unauthorized } from "../../../widgets";
 import Sidebar from "../../../widgets/Sidebar";
@@ -13,7 +14,7 @@ const Donacije = () => {
   if (status === "loading") {
     return <Loading />;
   }
-  if (!session || user.data?.role !== "admin") {
+  if (!session?.user || user.data?.role !== "admin") {
     return <Unauthorized />;
   }
 
@@ -29,15 +30,12 @@ const Donacije = () => {
         <Toaster position="bottom-center" />
         <div className="flex flex-row flex-grow">
           <Sidebar />
-          <div className="mt-16 px-4">
+          <div className="mt-16 px-4 flex flex-col items-center jusitfy-center gap-4 flex-grow">
             {isLoading && <div>Ucitavanje...</div>}
             {donations &&
               !isLoading &&
               donations.map((donation) => (
-                <div key={donation.id}>
-                  {donation.user.name}#{donation.user.discriminator}{" "}
-                  {donation.orderID}
-                </div>
+                <DonationCard key={donation.id} {...donation} />
               ))}
           </div>
         </div>
