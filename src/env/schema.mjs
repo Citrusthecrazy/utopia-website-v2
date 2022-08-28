@@ -14,6 +14,7 @@ export const serverSchema = z.object({
   DISCORD_CLIENT_SECRET: z.string(),
   PAYPAL_CLIENT_ID: z.string(),
   PAYPAL_CLIENT_SECRET: z.string(),
+  HCAPTCHA_SECRET: z.string(),
 });
 
 /**

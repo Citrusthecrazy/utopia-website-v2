@@ -92,3 +92,10 @@ model Issue {
     createdAt   DateTime @default(now())
     user        User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
 }
+
+model Message {
+    id          String @id @default(cuid())
+    author      String
+    authorEmail String
+    content     String @db.VarChar(500)
+}
