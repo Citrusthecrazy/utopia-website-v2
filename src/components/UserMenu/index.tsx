@@ -4,14 +4,14 @@ import { signOut, useSession } from "next-auth/react";
 import { Menu, Transition } from "@headlessui/react";
 import { useRouter } from "next/router";
 import { trpc } from "../../utils/trpc";
+
 const UserMenu = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const user = trpc.useQuery(["user.getUser"]);
   return (
-    <Menu as="div" className="hidden md:inline-block relative">
-      <Menu.Button>
-        {" "}
+    <Menu as="div" className="md:inline-block relative">
+      <Menu.Button className="mt-2">
         <Image
           src={session?.user?.image || ""}
           width={48}
@@ -28,7 +28,7 @@ const UserMenu = () => {
         leave="transition ease-in duration-75"
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95">
-        <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <Menu.Items className="absolute left-0 md:right-0 mt-2 w-56 origin-top-left md:origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="px-1 py-1">
             {user.data?.role === "admin" && (
               <Menu.Item>

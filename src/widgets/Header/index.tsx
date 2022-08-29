@@ -51,7 +51,7 @@ const Header = () => {
             </span>
           </a>
         </div>
-        {session ? (
+        {session && mobileMenuOpen ? (
           <UserMenu />
         ) : (
           <button
